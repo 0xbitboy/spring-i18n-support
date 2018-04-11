@@ -7,10 +7,10 @@
 - 支持Restful的多语言注解，支持spel表达式动态组成翻译的key
 
 # 使用
-&emsp;&emsp; 参考spring-i18n-support-demo项目进行一些必要的Bean配置后，我们就可以在项目中使用这些特性。主要是关于@I18n和@Translate这2个注解的使用。
+&emsp;&emsp; 参考spring-i18n-support-demo项目进行一些必要的Bean配置后，我们就可以在项目中使用这些特性。主要是关于@I18n和@Translate这2个注解的使用。
 
-- @I18n 标记Controller方法或者Bean属性，标明该方法需要进行多语言的翻译，或者该Bean属性下需要进行下一层次的翻译
-- @Translate 标记String字段，code参数可以使用spring的spel表达式。
+- @I18n 标记Controller方法或者Bean属性，标明该方法需要进行多语言的翻译，或者该Bean属性下需要进行下一层次的翻译
+- @Translate 标记String字段，code参数可以使用spring的spel表达式。
 ```
 public class I18nSPELResponse {
 
@@ -49,7 +49,7 @@ public class I18nSPELResponse {
 	}
 
 ```
-#语言环境的切换
+#语言环境的切换
 配置 LocaleChangeInterceptor 可以在url参数进行语言环境的切换
 ```
 	@Bean
