@@ -1,14 +1,16 @@
 package com.github.liaojiacan.spring.support.i18n.model;
 
 
-
+/**
+ * @author liaojiacan https://github.com/liaojiacan
+ */
 public final class MessageEntry {
 
 	private String code;
 
 	private String type;
 
-	private String lang;
+	private String locale;
 
 	private String message;
 
@@ -28,19 +30,19 @@ public final class MessageEntry {
 		this.type = type;
 	}
 
-	public String getLang() {
-		return lang;
-	}
-
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
-
 	public String getMessage() {
 		return message;
 	}
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 }

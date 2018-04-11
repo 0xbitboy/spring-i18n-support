@@ -1,7 +1,6 @@
 package com.github.liaojiacan.spring.support.i18n;
 
 import com.github.liaojiacan.spring.support.i18n.model.MessageEntry;
-import org.apache.commons.lang.LocaleUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.util.CollectionUtils;
@@ -9,12 +8,15 @@ import org.springframework.util.CollectionUtils;
 import java.text.MessageFormat;
 import java.util.*;
 
+/**
+ * @author liaojiacan https://github.com/liaojiacan
+ */
 public class RefreshableMessageSource extends AbstractMessageSource implements InitializingBean{
 
 	private MessageSourceProvider provider;
 
 	/**
-	 * Setting return origin code when the message not found.
+	 * Setting : return origin code when the message not found.
 	 */
 	protected Boolean returnUnresolvedCode = false;
 
@@ -33,12 +35,14 @@ public class RefreshableMessageSource extends AbstractMessageSource implements I
 			final Map<String,Map<Locale,MessageFormat>> finalMap = new HashMap<>();
 			messageEntries.forEach(messageEntry -> {
 				String code  = messageEntry.getCode();
-				Locale locale = LocaleUtils.toLocale(messageEntry.getLang());
+				Locale locale = Locale.forLanguageTag(messageEntry.getLocale());
 				Map<Locale, MessageFormat> localeMapping = finalMap.get(code);
 				if(localeMapping == null){
 					localeMapping = new HashMap<>();
+					finalMap.put(code,localeMapping);
 				}
 				localeMapping.put(locale,createMessageFormat(messageEntry.getMessage(),locale));
+
 			});
 			messageEntryMap = finalMap;
 		}
