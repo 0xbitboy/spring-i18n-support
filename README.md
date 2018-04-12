@@ -9,7 +9,7 @@
 # 使用
 &emsp;&emsp; 参考spring-i18n-support-demo项目进行一些必要的Bean配置后，我们就可以在项目中使用这些特性。主要是关于@I18n和@Translate这2个注解的使用。
 
-- @I18n 标记Controller方法或者Bean属性，标明该方法需要进行多语言的翻译，或者该Bean属性下需要进行下一层次的翻译
+- @I18n 标记Controller方法或者Bean属性，标明该方法需要进行多语言的翻译，或者该Bean属性下需要进行下一层次的翻译
 - @Translate 标记String字段，code参数可以使用spring的spel表达式。
 ```
 public class I18nSPELResponse {
@@ -38,26 +38,26 @@ public class I18nSPELResponse {
 ```
 
 ```
-    @RequestMapping("/i18n/spel/{id}")  
-	@ResponseBody
-	@I18n
-	public I18nSPELResponse i18nSpelResponse(@PathVariable("id") Integer id) {
-		I18nSPELResponse response = new I18nSPELResponse();
-		response.setId(id);
-		response.setMessage("default");
-		return response;
-	}
+@RequestMapping("/i18n/spel/{id}")  
+@ResponseBody
+@I18n
+public I18nSPELResponse i18nSpelResponse(@PathVariable("id") Integer id) {
+	I18nSPELResponse response = new I18nSPELResponse();
+	response.setId(id);
+	response.setMessage("default");
+	return response;
+}
 
 ```
 #语言环境的切换
-配置 LocaleChangeInterceptor 可以在url参数进行语言环境的切换
+配置 LocaleChangeInterceptor 可以在url带上参数进行语言环境的切换
 ```
-	@Bean
-	public LocaleChangeInterceptor localeChangeInterceptor() {
-		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-		interceptor.setParamName("locale");
-		return interceptor;
-	}
+@Bean
+public LocaleChangeInterceptor localeChangeInterceptor() {
+	LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+	interceptor.setParamName("locale");
+	return interceptor;
+}
 ```
 ```
 $ curl http://localhost:8080/i18n/spel/1?locale=en
