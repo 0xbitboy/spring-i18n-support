@@ -49,7 +49,7 @@ public I18nSPELResponse i18nSpelResponse(@PathVariable("id") Integer id) {
 }
 
 ```
-#语言环境的切换
+# 语言环境的切换
 配置 LocaleChangeInterceptor 可以在url带上参数进行语言环境的切换
 ```
 @Bean
