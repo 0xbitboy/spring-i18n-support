@@ -31,7 +31,7 @@
 
         <sonar.language>java</sonar.language>
 
-        <spring.version>4.3.12.RELEASE</spring.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
         <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
 
         <spring.data.release.train.version>Fowler-SR2</spring.data.release.train.version>

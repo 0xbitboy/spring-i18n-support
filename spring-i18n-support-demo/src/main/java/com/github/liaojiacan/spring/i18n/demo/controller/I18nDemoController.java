@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class I18nDemoController {
 
@@ -35,6 +38,18 @@ public class I18nDemoController {
 		response.setId(id);
 		response.setMessage("default");
 		return response;
+	}
+
+	@RequestMapping("/i18n/spel/{id}/list")
+	@ResponseBody
+	@I18n
+	public List<I18nSPELResponse> i18nSpelResponses(@PathVariable("id") Integer id) {
+		List<I18nSPELResponse> list = new ArrayList<>();
+		I18nSPELResponse response = new I18nSPELResponse();
+		response.setId(id);
+		response.setMessage("default");
+		list.add(response);
+		return list;
 	}
 
 }

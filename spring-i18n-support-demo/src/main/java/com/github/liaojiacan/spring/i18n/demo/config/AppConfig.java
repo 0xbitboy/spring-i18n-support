@@ -1,6 +1,7 @@
 package com.github.liaojiacan.spring.i18n.demo.config;
 
 import com.github.liaojiacan.spring.support.i18n.RefreshableMessageSource;
+import com.github.liaojiacan.spring.support.i18n.adivce.I18nResponseBodyAdvice;
 import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSoucreProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -18,7 +19,7 @@ import java.util.Locale;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackages = { "com.github.liaojiacan" })
+@ComponentScan(basePackages = { "com.github.liaojiacan.spring.i18n.demo" })
 public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
@@ -50,6 +51,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
 		interceptor.setParamName("locale");
 		return interceptor;
+	}
+
+	@Bean
+	public I18nResponseBodyAdvice i18nResponseBodyAdvice(){
+		return  new I18nResponseBodyAdvice();
 	}
 
 	@Override

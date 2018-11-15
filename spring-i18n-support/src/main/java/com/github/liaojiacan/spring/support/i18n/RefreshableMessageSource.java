@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * @author liaojiacan https://github.com/liaojiacan
  */
-public class RefreshableMessageSource extends AbstractMessageSource implements InitializingBean{
+public class RefreshableMessageSource extends AbstractMessageSource implements Refreshable,InitializingBean{
 
 	private MessageSourceProvider provider;
 
@@ -29,7 +29,8 @@ public class RefreshableMessageSource extends AbstractMessageSource implements I
 		this.provider = provider;
 	}
 
-	private void refresh(){
+	@Override
+	public void refresh(){
 		List<MessageEntry> messageEntries = provider.load();
 		if(!CollectionUtils.isEmpty(messageEntries)){
 			final Map<String,Map<Locale,MessageFormat>> finalMap = new HashMap<>();
