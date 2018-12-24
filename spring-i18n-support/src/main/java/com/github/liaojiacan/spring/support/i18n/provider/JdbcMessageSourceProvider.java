@@ -12,7 +12,7 @@ import java.util.Locale;
  * @author liaojiacan
  * @refer https://github.com/synyx/messagesource/blob/master/src/main/java/org/synyx/messagesource/jdbc/JdbcMessageProvider.java
  */
-public class JdbcMessageSoucreProvider implements MessageSourceProvider {
+public class JdbcMessageSourceProvider implements MessageSourceProvider {
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -29,6 +29,17 @@ public class JdbcMessageSoucreProvider implements MessageSourceProvider {
 	private String tableName = "i18n_message";
 	private String delimiter = "`";
 
+	private String providerName;
+
+	public JdbcMessageSourceProvider( String providerName,JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.providerName = providerName;
+	}
+
+	@Override
+	public String getName() {
+		return this.providerName;
+	}
 
 	@Override
 	public List<MessageEntry> load() {

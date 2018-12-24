@@ -1,8 +1,11 @@
 package com.github.liaojiacan.spring.i18n.demo.config;
 
+import com.github.liaojiacan.spring.support.i18n.MessageSourceProvider;
 import com.github.liaojiacan.spring.support.i18n.RefreshableMessageSource;
 import com.github.liaojiacan.spring.support.i18n.adivce.I18nResponseBodyAdvice;
-import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSoucreProvider;
+import com.github.liaojiacan.spring.support.i18n.manager.MessageSourceProviderManager;
+import com.github.liaojiacan.spring.support.i18n.provider.CustomMessageSourceProvider;
+import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSourceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +18,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 @EnableAutoConfiguration
@@ -26,15 +32,25 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	private JdbcTemplate jdbcTemplate;
 
 	@Bean
-	public JdbcMessageSoucreProvider jdbcMessageSoucreProvider(){
-		JdbcMessageSoucreProvider provider = new JdbcMessageSoucreProvider();
+	public JdbcMessageSourceProvider jdbcMessageSourceProvider(){
+		JdbcMessageSourceProvider provider = new JdbcMessageSourceProvider("default",jdbcTemplate);
 		provider.setJdbcTemplate(jdbcTemplate);
 		return provider;
 	}
 
+
+	@Bean
+	public MessageSourceProviderManager messageSourceProviderManager(){
+		MessageSourceProviderManager providerManager = new MessageSourceProviderManager();
+		MessageSourceProvider articleI18nProvider = new CustomMessageSourceProvider("articleI18nProvider",jdbcTemplate,"i18n_article",
+				Stream.of("title","description","a","b").collect(Collectors.toSet()), "id","article");
+		providerManager.setProviders(Arrays.asList(jdbcMessageSourceProvider(),articleI18nProvider));
+		return providerManager;
+	}
+
 	@Bean
 	public RefreshableMessageSource refreshableMessageSource(){
-		RefreshableMessageSource messageSource = new RefreshableMessageSource(jdbcMessageSoucreProvider());
+		RefreshableMessageSource messageSource = new RefreshableMessageSource(messageSourceProviderManager());
 		messageSource.setReturnUnresolvedCode(true);
 		return messageSource;
 	}

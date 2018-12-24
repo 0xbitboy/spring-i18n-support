@@ -1,5 +1,7 @@
 package com.github.liaojiacan.spring.i18n.demo.controller;
 
+import com.github.liaojiacan.spring.i18n.demo.dto.ArticleDTO;
+import com.github.liaojiacan.spring.i18n.demo.response.ArticleResponse;
 import com.github.liaojiacan.spring.i18n.demo.response.I18nSPELResponse;
 import com.github.liaojiacan.spring.i18n.demo.response.I18nSimpleResponse;
 import com.github.liaojiacan.spring.support.i18n.annotation.I18n;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -50,6 +53,17 @@ public class I18nDemoController {
 		response.setMessage("default");
 		list.add(response);
 		return list;
+	}
+
+	@RequestMapping("/i18n/article/list")
+	@ResponseBody
+	@I18n
+	public ArticleResponse listArticles(){
+		ArticleResponse articleResponse = new ArticleResponse();
+		ArticleDTO articleDTO = new ArticleDTO();
+		articleDTO.setId(1);
+		articleResponse.setArticles(Arrays.asList(articleDTO));
+		return articleResponse;
 	}
 
 }

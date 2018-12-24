@@ -1,6 +1,6 @@
 package com.github.liaojiacan.config;
 
-import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSoucreProvider;
+import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSourceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +36,8 @@ public class BaseConfig {
 	}
 
 	@Bean
-	public JdbcMessageSoucreProvider jdbcMessageSoucreProvider(){
-		JdbcMessageSoucreProvider provider = new JdbcMessageSoucreProvider();
-		provider.setJdbcTemplate(jdbcTemplate());
+	public JdbcMessageSourceProvider jdbcMessageSoucreProvider(){
+		JdbcMessageSourceProvider provider = new JdbcMessageSourceProvider("default",jdbcTemplate());
 		return provider;
 	}
 }

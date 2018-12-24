@@ -7,6 +7,8 @@ import java.util.Locale;
 
 public interface MessageSourceProvider {
 
+	String getName();
+
 	List<MessageEntry> load();
 
 	int addMessage(Locale locale,String code,String type,String message);

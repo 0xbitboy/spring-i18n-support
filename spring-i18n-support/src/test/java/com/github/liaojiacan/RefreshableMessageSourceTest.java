@@ -2,7 +2,7 @@ package com.github.liaojiacan;
 
 import com.github.liaojiacan.config.BaseConfig;
 import com.github.liaojiacan.spring.support.i18n.RefreshableMessageSource;
-import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSoucreProvider;
+import com.github.liaojiacan.spring.support.i18n.provider.JdbcMessageSourceProvider;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +31,11 @@ public class RefreshableMessageSourceTest extends AbstractTest {
 	public static class RefreshableMessageSourceTestConfig{
 
 		@Autowired
-		private JdbcMessageSoucreProvider jdbcMessageSoucreProvider;
+		private JdbcMessageSourceProvider jdbcMessageSourceProvider;
 
 		@Bean
 		public RefreshableMessageSource refreshableMessageSource(){
-			return  new RefreshableMessageSource(jdbcMessageSoucreProvider);
+			return  new RefreshableMessageSource(jdbcMessageSourceProvider);
 		}
 	}
 }
