@@ -1,5 +1,6 @@
 package com.github.liaojiacan.spring.support.i18n;
 
+import com.github.liaojiacan.spring.support.i18n.manager.MessageSourceProviderManager;
 import com.github.liaojiacan.spring.support.i18n.model.MessageEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.support.AbstractMessageSource;
@@ -13,7 +14,9 @@ import java.util.*;
  */
 public class RefreshableMessageSource extends AbstractMessageSource implements Refreshable,InitializingBean{
 
-	private MessageSourceProvider provider;
+	private Collection<? extends MessageSourceProvider> providers;
+
+	private MessageSourceProviderManager providerManager;
 
 	/**
 	 * Setting : return origin code when the message not found.
@@ -26,27 +29,34 @@ public class RefreshableMessageSource extends AbstractMessageSource implements R
 	private Map<String,Map<Locale,MessageFormat>> messageEntryMap = Collections.emptyMap();
 
 	public RefreshableMessageSource(MessageSourceProvider provider) {
-		this.provider = provider;
+		this.providers = Arrays.asList(provider);
 	}
+
+	public RefreshableMessageSource(MessageSourceProviderManager manager) {
+		this.providerManager = manager;
+	}
+
 
 	@Override
 	public void refresh(){
-		List<MessageEntry> messageEntries = provider.load();
-		if(!CollectionUtils.isEmpty(messageEntries)){
-			final Map<String,Map<Locale,MessageFormat>> finalMap = new HashMap<>();
-			messageEntries.forEach(messageEntry -> {
-				String code  = messageEntry.getCode();
-				Locale locale = Locale.forLanguageTag(messageEntry.getLocale());
-				Map<Locale, MessageFormat> localeMapping = finalMap.get(code);
-				if(localeMapping == null){
-					localeMapping = new HashMap<>();
-					finalMap.put(code,localeMapping);
-				}
-				localeMapping.put(locale,createMessageFormat(messageEntry.getMessage(),locale));
+		final Map<String,Map<Locale,MessageFormat>> finalMap = new HashMap<>();
+		this.providers.forEach(provider -> {
+			List<MessageEntry> messageEntries = provider.load();
+			if(!CollectionUtils.isEmpty(messageEntries)){
+				messageEntries.forEach(messageEntry -> {
+					String code  = messageEntry.getCode();
+					Locale locale = Locale.forLanguageTag(messageEntry.getLocale());
+					Map<Locale, MessageFormat> localeMapping = finalMap.get(code);
+					if(localeMapping == null){
+						localeMapping = new HashMap<>(Locale.getAvailableLocales().length);
+						finalMap.put(code,localeMapping);
+					}
+					localeMapping.put(locale,createMessageFormat(messageEntry.getMessage(),locale));
 
-			});
-			messageEntryMap = finalMap;
-		}
+				});
+			}
+		});
+		messageEntryMap = finalMap;
 	}
 
 	@Override
@@ -66,16 +76,10 @@ public class RefreshableMessageSource extends AbstractMessageSource implements R
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		this.providers = this.providerManager.loadProviders();
 		this.refresh();
 	}
 
-	public MessageSourceProvider getProvider() {
-		return provider;
-	}
-
-	public void setProvider(MessageSourceProvider provider) {
-		this.provider = provider;
-	}
 
 	public Boolean getReturnUnresolvedCode() {
 		return returnUnresolvedCode;

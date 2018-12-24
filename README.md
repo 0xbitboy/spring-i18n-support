@@ -6,7 +6,11 @@
 - 实现一个支持从数据库读取配置的MessageSource
 - 支持Restful的多语言注解，支持spel表达式动态组成翻译的key
 
-# 使用
+## 更新记录
+
+- 2018-12-24 支持多数据源
+
+## 使用
 &emsp;&emsp; 参考spring-i18n-support-demo项目进行一些必要的Bean配置后，我们就可以在项目中使用这些特性。主要是关于@I18n和@Translate这2个注解的使用。
 
 - @I18n 标记Controller方法或者Bean属性，标明该方法需要进行多语言的翻译，或者该Bean属性下需要进行下一层次的翻译
@@ -49,7 +53,7 @@ public I18nSPELResponse i18nSpelResponse(@PathVariable("id") Integer id) {
 }
 
 ```
-# 语言环境的切换
+## 语言环境的切换
 配置 LocaleChangeInterceptor 可以在url带上参数进行语言环境的切换
 ```
 @Bean
@@ -64,4 +68,40 @@ $ curl http://localhost:8080/i18n/spel/1?locale=en
 {"id":1,"message":"i18n spel code,id =1"}
 ```
 
+## 多数据源的配置
+&emsp;&emsp;默认的实现（JdbcMessageSourceProvider）都是在i18n_message这张表以key-value的形式配置的,若需要根据不同的业务隔离配置源，可以使用CustomMessageSourceProvider来配置列形式的映射关系。
 
+假如存在数据源表的结构如下
+
+| locale | id | a     | b     | title    | description |
+| ------ | -- | ----- | ----- | -------- | ----------- |
+| en     | 1  | 英文A | 英文B | 英文标题 | 英文描述 |
+| zh     | 1  | 中文A | 中文B | 中文标题 | 中文描述 |
+
+CustomMessageSourceProvider配置如下
+
+```
+@Bean
+public JdbcMessageSourceProvider jdbcMessageSourceProvider(){
+	JdbcMessageSourceProvider provider = new JdbcMessageSourceProvider("default",jdbcTemplate);
+	provider.setJdbcTemplate(jdbcTemplate);
+	return provider;
+}
+
+
+@Bean
+public MessageSourceProviderManager messageSourceProviderManager(){
+	MessageSourceProviderManager providerManager = new MessageSourceProviderManager();
+	MessageSourceProvider articleI18nProvider = new CustomMessageSourceProvider("articleI18nProvider",jdbcTemplate,"i18n_article",
+			Stream.of("title","description","a","b").collect(Collectors.toSet()), "id","article");
+	providerManager.setProviders(Arrays.asList(jdbcMessageSourceProvider(),articleI18nProvider));
+	return providerManager;
+}
+
+@Bean
+public RefreshableMessageSource refreshableMessageSource(){
+	RefreshableMessageSource messageSource = new RefreshableMessageSource(messageSourceProviderManager());
+	messageSource.setReturnUnresolvedCode(true);
+	return messageSource;
+}
+```
