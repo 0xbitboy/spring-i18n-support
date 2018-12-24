@@ -71,7 +71,7 @@ $ curl http://localhost:8080/i18n/spel/1?locale=en
 ## 多数据源的配置
 &emsp;&emsp;默认的实现（JdbcMessageSourceProvider）都是在i18n_message这张表以key-value的形式配置的,若需要根据不同的业务隔离配置源，可以使用CustomMessageSourceProvider来配置列形式的映射关系。
 
-假如存在数据源表的结构如下
+假如存在数据源表的结构如下(i18n_article)
 
 | locale | id | a     | b     | title    | description |
 | ------ | -- | ----- | ----- | -------- | ----------- |
