@@ -17,7 +17,7 @@ public class ArticleDTO {
 	private String description;
 	@Translate(code = "article.${id}.a")
 	private String a;
-	@Translate(code = "article.${id}.a")
+	@Translate(code = "article.${id}.b")
 	private String b;
 
 	public Integer getId() {

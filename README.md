@@ -68,10 +68,16 @@ $ curl http://localhost:8080/i18n/spel/1?locale=en
 {"id":1,"message":"i18n spel code,id =1"}
 ```
 
-## 多数据源的配置
+## 多数据源（自定义）的配置
 &emsp;&emsp;默认的实现（JdbcMessageSourceProvider）都是在i18n_message这张表以key-value的形式配置的,若需要根据不同的业务隔离配置源，可以使用CustomMessageSourceProvider来配置列形式的映射关系。
 
-假如存在数据源表的结构如下(i18n_article)
+假如存在一个业务表的结构如下(article)
+
+| id | a     | b     | title    | description |
+| -- | ----- | ----- | -------- | ----------- |
+| 1  | A | B | 标题 | 描述 |
+
+如果需要对该业务进行一个多语言的支持，那么我们把需要多语言翻译的字段提取到一个多语言表（i18n_article）中，并新增一个字段locale。
 
 | locale | id | a     | b     | title    | description |
 | ------ | -- | ----- | ----- | -------- | ----------- |
@@ -105,3 +111,20 @@ public RefreshableMessageSource refreshableMessageSource(){
 	return messageSource;
 }
 ```
+DTO 中@Translate的使用,code的格式与CustomMessageSourceProvider的配置有关，${codePrefix}.${value(keyColumn)}.${name(column)}
+```
+public class ArticleDTO {
+
+	@JsonIgnore
+	private Integer id;
+	@Translate(code = "article.${id}.title")
+	private String title;
+	@Translate(code = "article.${id}.description")
+	private String description;
+	@Translate(code = "article.${id}.a")
+	private String a;
+	@Translate(code = "article.${id}.b")
+	private String b;
+}
+```
+
