@@ -68,7 +68,7 @@ $ curl http://localhost:8080/i18n/spel/1?locale=en
 {"id":1,"message":"i18n spel code,id =1"}
 ```
 
-## 多数据源（自定义）的配置
+## 多数据源（自定义）的配置
 &emsp;&emsp;默认的实现（JdbcMessageSourceProvider）都是在i18n_message这张表以key-value的形式配置的,若需要根据不同的业务隔离配置源，可以使用CustomMessageSourceProvider来配置列形式的映射关系。
 
 假如存在一个业务表的结构如下(article)
@@ -77,7 +77,7 @@ $ curl http://localhost:8080/i18n/spel/1?locale=en
 | -- | ----- | ----- | -------- | ----------- |
 | 1  | A | B | 标题 | 描述 |
 
-如果需要对该业务进行一个多语言的支持，那么我们把需要多语言翻译的字段提取到一个多语言表（i18n_article）中，并新增一个字段locale。
+如果需要对该业务进行一个多语言的支持，那么我们把需要多语言翻译的字段提取到一个多语言表（i18n_article）中，并新增一个字段locale。
 
 | locale | id | a     | b     | title    | description |
 | ------ | -- | ----- | ----- | -------- | ----------- |
