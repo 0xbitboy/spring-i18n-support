@@ -111,7 +111,7 @@ public RefreshableMessageSource refreshableMessageSource(){
 	return messageSource;
 }
 ```
-DTO 中@Translate的使用,code的格式与CustomMessageSourceProvider的配置有关，${codePrefix}.${value(keyColumn)}.${name(column)}
+DTO中@Translate的使用,code的格式与CustomMessageSourceProvider的配置有关，${codePrefix}.${value(keyColumn)}.${name(column)}
 ```
 public class ArticleDTO {
 
