@@ -9,7 +9,7 @@
 ## 更新记录
 
 - 2018-12-24 支持多数据源
-- 2019-01-03 项目转移到新的项目中 [spring-i18n-enhancer](spring-supports-enhancer-project/spring-i18n-enhancer)
+- 2019-01-03 项目转移到新的项目中 [spring-i18n-enhancer](https://github.com/liaojiacan/spring-supports-enhancer/tree/master/spring-supports-enhancer-project/spring-i18n-enhancer)
 
 ## 使用
 &emsp;&emsp; 参考spring-i18n-support-demo项目进行一些必要的Bean配置后，我们就可以在项目中使用这些特性。主要是关于@I18n和@Translate这2个注解的使用。
